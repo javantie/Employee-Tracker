@@ -12,6 +12,6 @@ INSERT INTO employee (first_name, last_name, role_id)
 VALUES ("Geek", "Nerd", 1),
 ("Famous", "Guy", 2),
 ("Strict", "Person", 3),
-("eddy", "joe", 3),
+("Eddy", "joe", 3),
 ("Melissa", "Capers", 1),
 ("Micheal", "Clarke", 1);

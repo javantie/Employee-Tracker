@@ -32,6 +32,7 @@ const options = [
       "Add a Role",
       "Add an Employee",
       "Update Role",
+      "Exit"
     ],
   },
 ];
@@ -105,7 +106,7 @@ const addDepartment = () => {
     .prompt([
       { name: "name", type: "input", message: "What is the department name?" },
     ])
-    .then((answer)=>{
+    .then((answer) => {
       db.query(
         `INSERT INTO department SET ?`,
         {
@@ -116,20 +117,31 @@ const addDepartment = () => {
           console.log(answer);
 
           mainPrompt();
-        })
+        }
+      );
     });
 };
-
 
 const addRole = () => {
   inquirer
     .prompt([
-      { name: "title", type: "input", message: "What is the name of the role?" },
-      { name: "salary", type: "input", message: "What is the salary for this role?" },
-      { name: "department_id", type: "input", message: "What is the department for this role?" },
-    
+      {
+        name: "title",
+        type: "input",
+        message: "What is the name of the role?",
+      },
+      {
+        name: "salary",
+        type: "input",
+        message: "What is the salary for this role?",
+      },
+      {
+        name: "department_id",
+        type: "input",
+        message: "What is the department for this role?",
+      },
     ])
-    .then((answer)=>{
+    .then((answer) => {
       db.query(
         `INSERT INTO role SET ?`,
         {
@@ -142,19 +154,27 @@ const addRole = () => {
           console.log(answer);
 
           mainPrompt();
-        })
+        }
+      );
     });
 };
-
 
 const addEmployee = () => {
   inquirer
     .prompt([
-      { name: "first_name", type: "input", message: "What is the employee first name?" },
-      { name: "last_name", type: "input", message: "What is the employee last name?" },
-      { name: "role_id", type: "input", message: "What is role employee?"},
+      {
+        name: "first_name",
+        type: "input",
+        message: "What is the employee first name?",
+      },
+      {
+        name: "last_name",
+        type: "input",
+        message: "What is the employee last name?",
+      },
+      { name: "role_id", type: "input", message: "What is role employee?" },
     ])
-    .then((answer)=>{
+    .then((answer) => {
       db.query(
         `INSERT INTO employee SET ?`,
         {
@@ -165,10 +185,100 @@ const addEmployee = () => {
         (err) => {
           if (err) throw err;
           console.log(answer);
-          console.log(`You have created an employee ${answer.first_name} ${answer.last_name} with a role of ${answer.role_id}.`)
+          console.log(
+            `You have created an employee ${answer.first_name} ${answer.last_name} with a role of ${answer.role_id}.`
+          );
 
           mainPrompt();
-        })
+        }
+      );
     });
+};
+
+const updateRole = () => {
+  sql = `SELECT employee.first_name, employee.last_name, role.salary, role.title, role.id, department.name as "Department Name"
+  FROM employee
+  INNER JOIN role ON employee.role_id = role.id
+  INNER JOIN department ON role.department_id = department.id `;
+  db.query(sql, (err, res) => {
+    if (err) throw err;
+
+    inquirer
+      .prompt([
+        {
+          name: "employeeChoice",
+          type: "list",
+          choices: () => {
+            var choiceArray = [];
+            for (var i = 0; i < res.length; i++) {
+              choiceArray.push(`${res[i].first_name} ${res[i].last_name}`);
+            }
+            return choiceArray;
+          },
+          message: "Which employee do you want to change?",
+        },
+      ])
+      .then(() => {
+        const sql = `SELECT role.title, role.id, role.salary
+      FROM role`;
+        db.query(sql, (err, res) => {
+          if (err) throw err;
+          inquirer.prompt([
+            {
+              name: "roleChoice",
+              type: "list",
+              choices: function () {
+                var roleChoiceArray = [];
+                for (var i = 0; i < res.length; i++) {
+                  roleChoiceArray.push(res[i].title);
+                }
+
+                return roleChoiceArray;
+              },
+              message: "Which role do you want to apply to the employee?",
+            },
+          ]).then((answer)=> {
+            console.log(answer);
+            // variables for update
+            var role_id, employeeId;
+            const sql =  `SELECT employee.first_name, employee.last_name, employee.id
+            FROM employee`
+            // searching and matching for name
+           db.query(sql,(err, res) =>{
+                if (err) throw err;
+                for (var i = 0; i < res.length; i++) {
+                  if (
+                    `${res[i].first_name} ${res[i].last_name}` ===
+                    answer.employeeChoice
+                  ) {
+                    employeeId = res[i].id;
+                  }
+                }
+                // searching and matching for title
+                const sql = `SELECT role.title, role.salary, role.id
+                FROM role`
+                db.query(sql,(err, res)=> {
+                    if (err) throw err;
+    
+                    for (var i = 0; i < res.length; i++) {
+                      if (`${res[i].title}` === answer.roleChoice) {
+                        role_id = res[i].id;
+                      }
+                    }
+                    const params = [{role_id: role_id},{id: employeeId}]
+                    db.query(`UPDATE employee SET ? WHERE ?`,params,(err)=> {
+                        if (err) throw err;
+                        console.log("Employee's role has been changed.");
+                        mainPrompt();
+                      }
+                    );
+                  }
+                );
+              }
+            );
+          });
+        });
+      })
+})
 };
 mainPrompt();
