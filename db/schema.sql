@@ -1,10 +1,12 @@
--- Deleting if the database already exists
-DROP DATABASE IF EXISTS employee_tracker;
--- Creating a database
-CREATE database employee_tracker;
-
 -- using the database
 USE employee_tracker;
+
+-- Deleting if the tables already exists
+DROP TABLE IF EXISTS employee;
+DROP TABLE IF EXISTS role;
+DROP TABLE IF EXISTS department;
+-- Creating a database
+
 
 -- creating department table
 CREATE TABLE department (
