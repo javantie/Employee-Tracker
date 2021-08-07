@@ -21,5 +21,5 @@ Please check the application via website: https://javantienotetaker.herokuapp.co
 If you have any questions about the repo, open an issue or contact [javantie](https://github.com/javantie) directly [javantieclarke@gmail.coom](mailto:javantieclarke@gmail.coom).
 
 
-# ScreenShot 
-![App Image](https://github.com/javantie/TeamPortfolioGenerator/blob/main/assets/images/screenshot.PNG)
+# Walkthought Vedio 
+
