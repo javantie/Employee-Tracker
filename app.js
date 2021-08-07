@@ -130,7 +130,6 @@ const addRole = () => {
             for (let i = 0; i < res.length; i++) {
               choiceArray.push(res[i].name);
             }
-            console.log(choiceArray);
             return choiceArray;
           },
         },
@@ -158,7 +157,6 @@ const addRole = () => {
             console.log(
               `You have created ${answer.title} with salary of ${answer.salary} in ${dpt}.`
             );
-            console.log(department_id);
             mainPrompt();
           }
         );
@@ -192,7 +190,6 @@ const addEmployee = () => {
             for (let i = 0; i < res.length; i++) {
               choiceArray.push(`${res[i].title}`);
             }
-            console.log(choiceArray);
             return choiceArray;
           },
         },
@@ -213,7 +210,6 @@ const addEmployee = () => {
             },
             (err) => {
               if (err) throw err;
-              console.log(answer);
               console.log(
                 `You have created an employee ${answer.first_name} ${answer.last_name} with a role of ${disp}.`
               );
