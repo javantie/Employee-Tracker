@@ -1,55 +1,3 @@
-const inquirer = require("inquirer");
-const db = require("./db/connection");
-
-const options = [
-  {
-    type: "list",
-    name: "selection",
-    message: "What would you like to do?",
-    choices: [
-      "View All Departments",
-      "View All Roles",
-      "View All Employees",
-      "Add a Department",
-      "Add a Role",
-      "Add an Employee",
-      "Update Role",
-      "Exit",
-    ],
-  },
-];
-
-const mainPrompt = () => {
-  inquirer.prompt(options).then((answer) => {
-    switch (answer.selection) {
-      case "View All Departments":
-        viewAllDepartments();
-        break;
-      case "View All Roles":
-        viewAllRoles();
-        break;
-      case "View All Employees":
-        viewAllEmployees();
-        break;
-      case "Add a Department":
-        addDepartment();
-        break;
-      case "Add a Role":
-        addRole();
-        break;
-      case "Add an Employee":
-        addEmployee();
-        break;
-      case "Update Role":
-        updateRole();
-        break;
-      case "Exit":
-        db.end();
-        break;
-    }
-  });
-};
-
 const viewAllDepartments = (req, res) => {
   const sql = `SELECT * FROM department`;
   db.query(sql, (err, res) => {
@@ -72,9 +20,9 @@ const viewAllRoles = (req, res) => {
 
 const viewAllEmployees = (req, res) => {
   const sql = `SELECT employee.first_name, employee.last_name, role.salary, role.title, department.name as "Department Name", employee.manager_id as "Manager"
-  FROM employee
-  INNER JOIN role ON employee.role_id = role.id
-  INNER JOIN department ON role.department_id = department.id`;
+    FROM employee
+    INNER JOIN role ON employee.role_id = role.id
+    INNER JOIN department ON role.department_id = department.id`;
   db.query(sql, (err, res) => {
     if (err) throw err;
 
@@ -106,7 +54,7 @@ const addDepartment = () => {
 
 const addRole = () => {
   const sql = `SELECT department.name, department.id 
-  FROM department`;
+    FROM department`;
   db.query(sql, (err, res) => {
     if (err) throw err;
     inquirer
@@ -227,9 +175,9 @@ const addEmployee = () => {
 
 const updateRole = () => {
   sql = `SELECT employee.first_name, employee.last_name, role.salary, role.title, role.id, department.name as "Department Name"
-  FROM employee
-  INNER JOIN role ON employee.role_id = role.id
-  INNER JOIN department ON role.department_id = department.id `;
+    FROM employee
+    INNER JOIN role ON employee.role_id = role.id
+    INNER JOIN department ON role.department_id = department.id `;
   db.query(sql, (err, res) => {
     if (err) throw err;
 
@@ -250,7 +198,7 @@ const updateRole = () => {
       ])
       .then((answer) => {
         const sql = `SELECT role.title, role.id, role.salary
-      FROM role`;
+        FROM role`;
         db.query(sql, (err, res) => {
           if (err) throw err;
           inquirer
@@ -272,7 +220,7 @@ const updateRole = () => {
               // letiables for update
               let role_id, employeeId;
               const sql = `SELECT employee.first_name, employee.last_name, employee.id
-            FROM employee`;
+              FROM employee`;
               // searching and matching for name
               db.query(sql, (err, res) => {
                 if (err) throw err;
@@ -286,7 +234,7 @@ const updateRole = () => {
                 }
                 // searching and matching for title
                 const sql = `SELECT role.title, role.salary, role.id
-                FROM role`;
+                  FROM role`;
                 db.query(sql, (err, res) => {
                   if (err) throw err;
 
@@ -309,4 +257,5 @@ const updateRole = () => {
       });
   });
 };
-mainPrompt();
+
+
