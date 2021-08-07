@@ -61,7 +61,10 @@ const viewAllDepartments = (req, res) => {
 };
 
 const viewAllRoles = (req, res) => {
-  const sql = `SELECT * FROM role`;
+  const sql = `SELECT role.id, role.title, role.salary, department.name as "Department"
+  FROM role
+  INNER JOIN department ON role.department_id = department.id
+  `;
   db.query(sql, (err, res) => {
     if (err) throw err;
 
@@ -71,7 +74,7 @@ const viewAllRoles = (req, res) => {
 };
 
 const viewAllEmployees = (req, res) => {
-  const sql = `SELECT employee.first_name, employee.last_name, role.salary, role.title, department.name as "Department Name", employee.manager_id as "Manager"
+  const sql = `SELECT employee.first_name, employee.last_name, role.salary, role.title, department.name as "Department Name"
   FROM employee
   INNER JOIN role ON employee.role_id = role.id
   INNER JOIN department ON role.department_id = department.id`;
@@ -105,7 +108,7 @@ const addDepartment = () => {
 };
 
 const addRole = () => {
-  const sql = `SELECT department.name, department.id 
+  const sql = `SELECT department.name, department.id
   FROM department`;
   db.query(sql, (err, res) => {
     if (err) throw err;

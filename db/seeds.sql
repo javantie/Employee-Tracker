@@ -8,10 +8,10 @@ VALUES ("Engineer",100000,1),
 ("Collaborator", 45000,2),
 ("Recruiter",60000,3);
 
-INSERT INTO employee (first_name, last_name, role_id, manager_id) 
-VALUES ("Geek", "Nerd", 1, 1),
-("Famous", "Guy", 2, 1),
-("Strict", "Person", 3, 1),
-("Eddy", "joe", 3, 2),
-("Melissa", "Capers", 1, 2),
-("Micheal", "Clarke", 1, 2);
+INSERT INTO employee (first_name, last_name, role_id) 
+VALUES ("Geek", "Nerd", 1),
+("Famous", "Guy", 2),
+("Strict", "Person", 3),
+("Eddy", "joe", 3),
+("Melissa", "Capers", 1),
+("Micheal", "Clarke", 1);
