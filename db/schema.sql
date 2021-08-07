@@ -1,3 +1,6 @@
+DROP DATABASE IF EXISTS employee_tracker;
+CREATE DATABASE employee_tracker;
+
 -- using the database
 USE employee_tracker;
 
