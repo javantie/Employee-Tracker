@@ -1,6 +1,4 @@
 USE employee_tracker;
-SELECT employee.first_name, employee.last_name, role.salary, role.title, department.name as "Department Name",Manager.first_name
-  FROM employee
-  LEFT JOIN role ON employee.role_id = role.id
-  LEFT JOIN department ON role.department_id = department.id
-  LEFT JOIN employee Manager ON employee.manager_id= Manager.id
+
+UPDATE employee SET manager_id = 3 WHERE id = 1 OR id = 6;
+UPDATE employee SET manager_id = 2 WHERE id = 4 OR id = 5;
