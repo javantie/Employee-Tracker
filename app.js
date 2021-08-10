@@ -74,10 +74,11 @@ const viewAllRoles = (req, res) => {
 };
 
 const viewAllEmployees = (req, res) => {
-  const sql = `SELECT employee.first_name, employee.last_name, role.salary, role.title, department.name as "Department Name"
+  const sql = `SELECT employee.first_name, employee.last_name, role.salary, role.title, department.name as "Department Name", Manager.first_name AS "Manager"
   FROM employee
-  INNER JOIN role ON employee.role_id = role.id
-  INNER JOIN department ON role.department_id = department.id`;
+  LEFT JOIN role ON employee.role_id = role.id
+  LEFT JOIN department ON role.department_id = department.id
+  LEFT JOIN employee Manager ON employee.manager_id = Manager.id`;
   db.query(sql, (err, res) => {
     if (err) throw err;
 
