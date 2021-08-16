@@ -103,7 +103,7 @@ const addDepartment = () => {
         },
         (err) => {
           if (err) throw err;
-          console.log(answer);
+          console.log(`New Department created called ${answer.name}`);
 
           mainPrompt();
         }
@@ -142,14 +142,12 @@ const addRole = () => {
         },
       ])
       .then((answer) => {
-        console.log(res);
 
         let dpt = answer.choice;
         let department_id;
         for (let i = 0; i < res.length; i++) {
           if (res[i].name === answer.choice) {
             department_id = res[i].id;
-            console.log(department_id);
           }
         }
         db.query(
@@ -208,22 +206,22 @@ const addEmployee = () => {
           if (res[i].title === answer.choice) {
             role_id = res[i].id;
           }
-          db.query(
-            `INSERT INTO employee SET ?`,
-            {
-              first_name: answer.first_name,
-              last_name: answer.last_name,
-              role_id: role_id,
-            },
-            (err) => {
-              if (err) throw err;
-              console.log(
-                `You have created an employee ${answer.first_name} ${answer.last_name} with a role of ${disp}.`
-              );
-              mainPrompt();
-            }
-          );
         }
+        db.query(
+          `INSERT INTO employee SET ?`,
+          {
+            first_name: answer.first_name,
+            last_name: answer.last_name,
+            role_id: role_id,
+          },
+          (err) => {
+            if (err) throw err;
+            console.log(
+              `You have created an employee ${answer.first_name} ${answer.last_name} with a role of ${disp}.`
+            );
+            mainPrompt();
+          }
+        );
       });
   });
 };
@@ -357,7 +355,6 @@ const updateManger = () => {
                 }
                   const sql = `UPDATE employee SET ? WHERE ?`;
                   const params = [{ manager_id: answer.manager_id }, { id: employeeId }];
-                  console.log(params)
                   db.query(sql, params, (err) => {
                     if (err) throw err;
                     console.log("Employee's manager has been changed.");
